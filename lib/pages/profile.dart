@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mtr/pages/notif.dart';
+import 'package:mtr/pages/settings.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -12,11 +14,21 @@ class ProfilePage extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.notifications),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NotificationsPage()),
+              );
+            },
           ),
           IconButton(
             icon: Icon(Icons.settings),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SettingsPage()),
+              );
+            },
           ),
         ],
       ),

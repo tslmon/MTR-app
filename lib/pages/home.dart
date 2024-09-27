@@ -1,46 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:mtr/pages/event.dart';
+import 'package:mtr/pages/notif.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
-
-  // List of pages for BottomNavigationBar
-  List<Widget> _pages = [
-    HomeScreen(),
-    Center(child: Text('Тоглолт')),
-    Center(child: Text('Тэмцээн')),
-    Center(child: Text('Хайлт')),
-    Center(child: Text('Профайл')),
-  ];
-
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Row(
           children: [
-            Text('Нүүр'),
+            Text('Нүүр', style: TextStyle(color: Colors.black)),
             Spacer(),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -56,7 +25,12 @@ class _HomePageState extends State<HomePage> {
             Spacer(),
             IconButton(
               icon: Icon(Icons.notifications),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NotificationsPage()),
+                );
+              },
             ),
           ],
         ),
@@ -64,116 +38,81 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),
-      body: _pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Нүүр',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.sports_tennis),
-            label: 'Тоглолт',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.emoji_events),
-            label: 'Тэмцээн',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Хайлт',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Профайл',
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Section 1 - Миний тоглолтууд
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              'Миний тоглолтууд',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16),
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
-              children: [
-                Text(
-                  'Тоглолт олох',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Миний тоглолтууд Section
+              Text(
+                'Миний тоглолтууд',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey[300]!),
                 ),
-                SizedBox(height: 8),
-                Text('Одоогоор тоглолт байхгүй байна'),
-                SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: Text('Тоглолт үүсгэх'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Тоглолт олох',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    SizedBox(height: 8),
+                    Text('Одоогоор тоглолт байхгүй байна'),
+                    SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => EventPage()),
+                        );
+                      },
+                      child: Text('Тоглолт үүсгэх'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              SizedBox(height: 20),
+
+              // Удахгүй болох тоглолтууд Section
+              Text(
+                'Удахгүй болох тоглолтууд',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              _upcomingMatchCard(),
+
+              SizedBox(height: 20),
+
+              // Сүүлд тоглосон тоглогчид Section
+              Text(
+                'Сүүлд тоглосон тоглогчид',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              _previousMatchCard(),
+            ],
           ),
-          SizedBox(height: 20),
-          // Section 2 - Удахгүй болох тоглолтууд
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              'Удахгүй болох тоглолтууд',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ),
-          _upcomingMatchCard(),
-          // Section 3 - Сүүлд тоглосон тоглогчид
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              'Сүүлд тоглосон тоглогчид',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ),
-          _previousMatchCard(),
-        ],
+        ),
       ),
     );
   }
 
+  // Widget for upcoming match card
   Widget _upcomingMatchCard() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -200,8 +139,10 @@ class HomeScreen extends StatelessWidget {
                 Text('Бүртгэл эхэлсэн', style: TextStyle(color: Colors.white)),
           ),
           SizedBox(height: 8),
-          Text('Сонирхогчдын тэмцээн',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          Text(
+            'Сонирхогчдын тэмцээн',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
           SizedBox(height: 8),
           Row(
             children: [
@@ -215,7 +156,13 @@ class HomeScreen extends StatelessWidget {
             children: [
               Icon(Icons.location_on, size: 16, color: Colors.grey),
               SizedBox(width: 5),
-              Text('ХУД, Ривер гарденын баруун талд Хан Хиллс хотхон дотор'),
+              Expanded(
+                child: Text(
+                  'ХУД, Ривер гарденын баруун талд Хан Хиллс хотхон дотор',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             ],
           ),
           SizedBox(height: 8),
@@ -225,9 +172,9 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  // Widget for previous match card
   Widget _previousMatchCard() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -244,8 +191,10 @@ class HomeScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('8 сарын 6 | 14:00',
-              style: TextStyle(fontWeight: FontWeight.bold)),
+          Text(
+            '8 сарын 6 | 14:00',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           SizedBox(height: 5),
           Text('Алтангадас спорт заал'),
         ],
@@ -253,130 +202,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-// import 'package:flutter/material.dart';
-// import 'package:mtr/pages/competition.dart';
-// import 'package:mtr/pages/event.dart';
-// import 'package:mtr/pages/profile.dart';
-// import 'package:mtr/pages/search.dart';
 
-// void main() {
-//   runApp(MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flutter Demo',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: HomePage(),
-//     );
-//   }
-// }
-
-// class HomePage extends StatefulWidget {
-//   @override
-//   _HomePageState createState() => _HomePageState();
-// }
-
-// class _HomePageState extends State<HomePage> {
-//   int _selectedIndex = 0;
-
-//   // List of pages for BottomNavigationBar
-//   List<Widget> _pages = [
-//     HomeScreen(),
-//     EventPage(),
-//     CompetitionPage(),
-//     SearchPage(),
-//     ProfilePage(),
-//   ];
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: _selectedIndex == 0
-//           ? _buildHomeAppBar()
-//           : null, // Show AppBar only on Home page
-//       body: _pages[_selectedIndex],
-//       bottomNavigationBar: BottomNavigationBar(
-//         type: BottomNavigationBarType.fixed,
-//         currentIndex: _selectedIndex,
-//         selectedItemColor: Colors.blue,
-//         unselectedItemColor: Colors.grey,
-//         onTap: (index) {
-//           setState(() {
-//             _selectedIndex = index;
-//           });
-//         },
-//         items: const [
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.home),
-//             label: 'Нүүр',
-//           ),
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.sports_tennis),
-//             label: 'Тоглолт',
-//           ),
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.emoji_events),
-//             label: 'Тэмцээн',
-//           ),
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.search),
-//             label: 'Хайлт',
-//           ),
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.person),
-//             label: 'Профайл',
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-
-//   AppBar _buildHomeAppBar() {
-//     return AppBar(
-//       title: Row(
-//         children: [
-//           Text('Нүүр'),
-//           Spacer(),
-//           Container(
-//             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-//             decoration: BoxDecoration(
-//               color: Colors.teal,
-//               borderRadius: BorderRadius.circular(8),
-//             ),
-//             child: Text(
-//               'MTR 2.5',
-//               style: TextStyle(color: Colors.white),
-//             ),
-//           ),
-//           Spacer(),
-//           IconButton(
-//             icon: Icon(Icons.notifications),
-//             onPressed: () {},
-//           ),
-//         ],
-//       ),
-//       elevation: 0,
-//       backgroundColor: Colors.white,
-//       foregroundColor: Colors.black,
-//     );
-//   }
-// }
-
-// class HomeScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return SingleChildScrollView(
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           // Content of the HomeScreen (as shown in your previous implementation)
-//         ],
-//       ),
-//     );
-//   }
-// }
+void main() {
+  runApp(MaterialApp(home: HomeScreen()));
+}

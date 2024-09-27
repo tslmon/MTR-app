@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mtr/pages/filter.dart';
+import 'package:mtr/pages/notif.dart';
 
 class CompetitionPage extends StatelessWidget {
   @override
@@ -7,13 +9,14 @@ class CompetitionPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Тэмцээн'),
         backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.search),
+            icon: Icon(Icons.notifications),
             onPressed: () {
-              // Add search functionality here
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NotificationsPage()),
+              );
             },
             color: Colors.black,
           ),
@@ -24,7 +27,58 @@ class CompetitionPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 16),
+            // Search Input Field
+            Expanded(
+              child: Row(
+                children: [
+                  // Search Input Field
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Хайх',
+                        prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide.none,
+                        ),
+                        fillColor: Colors.grey[200],
+                        filled: true,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                      width: 8), // Space between search and filter icon
+
+                  // Filter Icon Button
+                  ElevatedButton(
+                    onPressed: () {
+                      // Show the filter modal bottom sheet when the filter icon is pressed
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(16)),
+                        ),
+                        builder: (context) {
+                          return FilterModal();
+                        },
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.all(
+                          12), // Padding to make the button square
+                      backgroundColor: Colors.blue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: Icon(Icons.filter_list, color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+
             _eventCard(
               title: 'Сонирхогчдын тэмцээн',
               date: '10 сарын 6',

@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mtr/pages/area.dart';
+import 'package:mtr/pages/competition.dart';
+import 'package:mtr/pages/event.dart';
+import 'package:mtr/pages/notif.dart';
+import 'PlayersComponent.dart';
 
 class SearchPage extends StatelessWidget {
   @override
@@ -12,7 +17,12 @@ class SearchPage extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.notifications),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NotificationsPage()),
+              );
+            },
           ),
         ],
       ),
@@ -60,29 +70,25 @@ class SearchPage extends StatelessWidget {
                     context,
                     title: 'Тоглолт',
                     subtitle: 'Нийт 23',
-                    icon: Icons.sports_tennis,
-                    color: Colors.lightBlueAccent,
+                    imagePath: 'lib/assets/event.png',
                   ),
                   _buildCategoryCard(
                     context,
                     title: 'Тоглогчид',
                     subtitle: 'Бүртгэлтэй 168',
-                    icon: Icons.sports_tennis,
-                    color: Colors.purpleAccent,
+                    imagePath: 'lib/assets/players.png',
                   ),
                   _buildCategoryCard(
                     context,
                     title: 'Талбай',
                     subtitle: 'Нийт 3',
-                    icon: Icons.sports_tennis,
-                    color: Colors.lightGreen,
+                    imagePath: 'lib/assets/venue.png',
                   ),
                   _buildCategoryCard(
                     context,
                     title: 'Тэмцээн',
                     subtitle: 'Нийт 3',
-                    icon: Icons.emoji_events,
-                    color: Colors.yellowAccent,
+                    imagePath: 'lib/assets/comp.png',
                   ),
                 ],
               ),
@@ -97,37 +103,67 @@ class SearchPage extends StatelessWidget {
     BuildContext context, {
     required String title,
     required String subtitle,
-    required IconData icon,
-    required Color color,
+    required String imagePath,
   }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16.0),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: ListTile(
-        contentPadding: EdgeInsets.all(16.0),
-        leading: Icon(
-          icon,
-          color: Colors.white,
-          size: 40,
+    return InkWell(
+      onTap: () {
+        if (title == 'Тоглогчид') {
+          // Navigate to the PlayersComponent when "Тоглогчид" is tapped
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PlayersComponent()),
+          );
+        } else if (title == 'Тоглолт') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => EventPage()),
+          );
+        } else if (title == 'Тэмцээн') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CompetitionPage()),
+          );
+        } else if (title == 'Талбай') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => VenuePage()),
+          );
+        }
+      },
+      child: Container(
+        width: double.infinity,
+        margin: EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          image: DecorationImage(
+            image: AssetImage(imagePath), // Load the image from assets
+            fit: BoxFit.cover, // Make sure the image covers the container
+          ),
         ),
-        title: Text(
-          title,
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white, // Text color on top of image
+                ),
+              ),
+              SizedBox(height: 8),
+              Text(
+                subtitle,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white, // Text color on top of image
+                ),
+              ),
+            ],
+          ),
         ),
-        subtitle: Text(
-          subtitle,
-          style: TextStyle(color: Colors.white70),
-        ),
-        trailing: Icon(
-          Icons.arrow_forward,
-          color: Colors.white,
-        ),
-        onTap: () {
-          // Handle on tap event for each category
-        },
       ),
     );
   }

@@ -28,28 +28,28 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            Text('Нүүр'),
-            Spacer(),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: Colors.teal,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                'MTR 2.5',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            Spacer(),
-            IconButton(
-              icon: Icon(Icons.notifications),
-              onPressed: () {},
-            ),
-          ],
-        ),
+        // title: Row(
+        //   children: [
+        //     Text('Нүүр'),
+        //     Spacer(),
+        //     Container(
+        //       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        //       decoration: BoxDecoration(
+        //         color: Colors.teal,
+        //         borderRadius: BorderRadius.circular(8),
+        //       ),
+        //       child: Text(
+        //         'MTR 2.5',
+        //         style: TextStyle(color: Colors.white),
+        //       ),
+        //     ),
+        //     Spacer(),
+        //     IconButton(
+        //       icon: Icon(Icons.notifications),
+        //       onPressed: () {},
+        //     ),
+        //   ],
+        // ),
         elevation: 0,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
